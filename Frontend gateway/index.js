@@ -37,7 +37,7 @@ async function authenticateToken(req, res, next) {
       `${LOGIN_SERVICE_URL}/validate-token`,
       requestBody
     );
-
+    console.log(response);
     if (response.data && response.data.isValid) {
       req.user = response.data.data;
       next();
@@ -51,6 +51,7 @@ async function authenticateToken(req, res, next) {
       return res.redirect(URL);
     }
   } catch (error) {
+    console.log(error);
     const callbackUrl = encodeURIComponent(
       `${req.protocol}://${req.get("host")}${req.originalUrl}`
     );

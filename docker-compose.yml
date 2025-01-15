@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./Frontend gateway
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${FRONTEND_PORT}
+      LOGIN_SERVICE_URL: ${LOGIN_SERVICE_URL}
+      CHAT_SERVICE_URL: ${CHAT_SERVICE_URL}
+      LOGIN_APP_DEV_SERVER: ${LOGIN_APP_DEV_SERVER}
+      CHAT_APP_DEV_SERVER: ${CHAT_APP_DEV_SERVER}
+      CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Frontend gateway:/usr/src/app # Mount local code to the container for live changes
+      - /usr/src/app/node_modules # Ensure node_modules are handled properly
+
+  backend:
+    build:
+      context: ./API gateway
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${BACKEND_PORT}
+      LOGIN_SERVICE_URL: ${LOGIN_SERVICE_URL}
+      CHAT_SERVICE_URL: ${CHAT_SERVICE_URL}
+      LOGIN_APP_DEV_SERVER: ${LOGIN_APP_DEV_SERVER}
+      CHAT_APP_DEV_SERVER: ${CHAT_APP_DEV_SERVER}
+      CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./API gateway:/usr/src/app # Mount local code to the container for live changes
+      - /usr/src/app/node_modules # Ensure node_modules are handled properly
